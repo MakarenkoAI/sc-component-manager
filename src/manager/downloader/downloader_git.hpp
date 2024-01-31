@@ -61,7 +61,6 @@ public:
     }
     // filename to download
     query << pathPostfix;
-
     ScExec exec{{query.str()}};
     return true;
   }
@@ -79,7 +78,10 @@ public:
    * @param urlAddress component address to install
    * @return true if downloaded successfully
    */
-  bool DownloadRepository(std::string const & downloadPath, std::string const & urlAddress) override
+  bool DownloadRepository(
+          std::string const & downloadPath,
+          std::string const & urlAddress,
+          std::string const & nameOfComponent) override
   {
     if (!sc_fs_create_directory(downloadPath.c_str()))
     {
@@ -102,7 +104,7 @@ public:
     if (directoryName.empty())
     {
       // Execute git clone whole repo if there is no need to download only subdirectory
-      query << GitHubConstants::GIT_CLONE << " " << repositoryAddress;
+      query << GitHubConstants::GIT_CLONE << " " << repositoryAddress << " " << nameOfComponent;
     }
     else
     {
